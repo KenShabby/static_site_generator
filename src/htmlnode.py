@@ -27,19 +27,21 @@ class HTMLNode:
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, children=[], props={}) -> None:
         super().__init__(tag, value, children, props)
-        if not tag:
-            return value
         self.children = None
-        if not value:
+        if not value and tag and tag != "img":
             raise ValueError("Leaf must have a value")
         self.props = props
 
     def to_html(self):
-        html_strings = ""
+
+        if self.tag is None:
+            return self.value
+
         if not self.props:
             return f"<{self.tag}>{self.value}</{self.tag}>"
-        for key, value in self.props.items():
-            html_strings += f"<{self.tag} {key}={value}>{self.value}</{self.tag}>"
+
+        props_str = " ".join([f'{key}="{value}"' for key, value in self.props.items()])
+        return f"<{self.tag} {props_str}>{self.value}</{self.tag}>"
 
     def __repr__(self) -> str:
         return super().__repr__()
