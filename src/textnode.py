@@ -73,5 +73,4 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             else:
                 split_nodes.append(TextNode(sections[i], text_type))
         new_nodes.extend(split_nodes)
-        print("FINAL RESULT:", [(node.text, node.text_type) for node in new_nodes])
     return new_nodes
