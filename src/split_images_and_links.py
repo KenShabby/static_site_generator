@@ -1,4 +1,5 @@
-from extract_images_and_links import *
+import re
+
 from textnode import *
 
 
@@ -78,3 +79,66 @@ def split_nodes_link(old_nodes) -> list:
             new_nodes.extend(split_nodes_link([remaining_node]))
 
     return new_nodes
+
+def split_nodes_delimiter(old_nodes, delimiter, text_type):
+    new_nodes = []
+    for old_node in old_nodes:
+        if old_node.text_type != TextType.TEXT:
+            new_nodes.append(old_node)
+            continue
+        split_nodes = []
+        sections = old_node.text.split(delimiter)
+        if len(sections) % 2 == 0:
+            raise ValueError("invalid markdown, formatted section not closed")
+        for i in range(len(sections)):
+            if sections[i] == "":
+                continue
+            if i % 2 == 0:
+                split_nodes.append(TextNode(sections[i], TextType.TEXT))
+            else:
+                split_nodes.append(TextNode(sections[i], text_type))
+        new_nodes.extend(split_nodes)
+    return new_nodes
+
+def extract_markdown_images(text) -> list:
+    """ Args: Takes raw markdown text. There can be multiple markdown links to
+    images in the string.
+
+    Returns: A list of tuples. Each tuple
+    contains an alt_text string and a url for the image.
+    """
+
+    image_md_regex = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+
+    return image_md_regex
+
+
+def extract_markdown_links(text) -> list:
+    """ Args: Takes raw markdown text with markdown links.
+
+        Returns: A list of tuples. Each tuple contains the href value and url.
+    """
+
+    link_md_regex = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+
+    return link_md_regex
+
+def text_to_textnodes(text) -> list:
+    """ Args: A raw string of Markdown.
+        Returns a list of TextNodes
+    """
+    # Handle the empty string case specifically
+    if text == "":
+        return [TextNode("", TextType.TEXT)]
+
+    # Apply each splitting method in squence
+    nodes = [TextNode(text, TextType.TEXT)]
+    # Start with images and links
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    # Move on to the different delimiter types
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+
+    return nodes

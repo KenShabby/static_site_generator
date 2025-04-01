@@ -1,6 +1,6 @@
 import unittest
 
-from extract_images_and_links import extract_markdown_images, extract_markdown_links
+from split_images_and_links import extract_markdown_images, extract_markdown_links
 
 
 class TestImagesAndLinks(unittest.TestCase):
@@ -21,4 +21,3 @@ class TestImagesAndLinks(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
