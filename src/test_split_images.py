@@ -1,6 +1,6 @@
 import unittest
 
-from split_images_and_links import *
+from inline_splitters import *
 from textnode import TextType, TextNode
 
 

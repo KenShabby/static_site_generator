@@ -1,6 +1,6 @@
 import unittest
 
-from split_images_and_links import extract_markdown_images, extract_markdown_links
+from inline_splitters import extract_markdown_images, extract_markdown_links
 
 
 class TestImagesAndLinks(unittest.TestCase):
