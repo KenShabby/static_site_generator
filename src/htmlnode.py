@@ -1,5 +1,6 @@
+
 class HTMLNode:
-    def __init__(self, tag=None, value=None, children=None, props=None) -> None:
+    def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag
         self.value = value
         self.children = children
@@ -22,10 +23,10 @@ class HTMLNode:
 
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag, value, props=None) -> None:
+    def __init__(self, tag, value, props=None):
         super().__init__(tag, value, None, props)
 
-    def to_html(self):
+    def to_html(self) -> str:
         if self.value == None:
             raise ValueError("invalid HTML: no value")
         if self.tag is None:
@@ -40,14 +41,12 @@ class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
         super().__init__(tag, None, children, props)
 
-    def to_html(self):
+    def to_html(self) -> str:
         if not self.tag:
             raise ValueError("Tag is required")
         if not self.children:
             raise ValueError("A parent node needs children!")
 
-        # Create opening tag
-        # Deal with potential properties
         children_html = ""
         for child in self.children:
             children_html += child.to_html()

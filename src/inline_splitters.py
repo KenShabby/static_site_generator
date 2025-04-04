@@ -80,7 +80,7 @@ def split_nodes_link(old_nodes) -> list:
 
     return new_nodes
 
-def split_nodes_delimiter(old_nodes, delimiter, text_type):
+def split_nodes_delimiter(old_nodes, delimiter, text_type) -> list:
     new_nodes = []
     for old_node in old_nodes:
         if old_node.text_type != TextType.TEXT:

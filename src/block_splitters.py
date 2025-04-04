@@ -19,17 +19,17 @@ def block_to_block_type(markdown) -> BlockType:
     quote_pattern = r"^>"
     unordered_pattern = r"^- "
 
-    # Heading handling
+    # Heading block handling
     match = re.match(heading_pattern, markdown)
     if match:
         return BlockType.HEADING
 
-    # Code handling
+    # Code block handling
     match = re.search(code_pattern, markdown, re.DOTALL)
     if match:
         return BlockType.CODE
 
-    # Quote handling
+    # Quote block handling
     lines = markdown.split('\n')
     if(all(re.match(quote_pattern, line) for line in lines)):
         return BlockType.QUOTE
@@ -53,7 +53,7 @@ def block_to_block_type(markdown) -> BlockType:
     if is_ordered_list:
         return BlockType.ORDERED_LIST
 
-    # Paragraph default
+    # Paragraph type if nothing else matches
     block_type = BlockType.PARAGRAPH
     return block_type
 
@@ -63,6 +63,7 @@ def markdown_to_blocks(markdown)-> list:
     """
 
     blocks = [item.strip() for item in markdown.split("\n\n")]
+    # Discard empty items
     blocks = [item for item in blocks if item]
 
    # Normalize internal newlines by handling indentation properly

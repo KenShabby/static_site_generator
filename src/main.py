@@ -5,8 +5,8 @@ from block_splitters import *
 from markdown_to_html_node import *
 
 SOURCE_DIR = "static/"
-CONTENT_DIR = "content/index.md"
-TEMPLATE_DIR = "template.html"
+CONTENT_DIR = "content/"
+TEMPLATE_DIR = "."
 DEST_DIR = "public/"
 
 
@@ -35,11 +35,11 @@ def nuke_dir(path):
 def extract_title(markdown)-> str:
 
     title_tag = markdown[:2]
+    idx_EOL = markdown.find('\n')
     if title_tag != "# ":
         raise Exception("That was not a properly formatted markdown title")
-    title = markdown[1:].strip()
-    print(f"The title is: {title}")
-    return title
+    title = markdown[1:idx_EOL]
+    return title.strip()
 
 
 def generate_page(from_path, template_path, dest_path):
@@ -47,27 +47,27 @@ def generate_page(from_path, template_path, dest_path):
 
     #Read the markdown file at from_path and store the contents in a variable.
     try:
-        with open('{from_path}', 'r') as read_file:
+        print(f"Attempting to open: {from_path}")
+        with open(f"{from_path}index.md", "r") as read_file:
+            print(f"Succeeded.")
             # Use your markdown_to_html_node function and .to_html() method to convert
             # the markdown file to an HTML string.
             content = read_file.read()
-            #Use the extract_title function to grab the title of the page.
+            # Use the extract_title function to grab the title of the page.
             page_title = extract_title(content)
-            print(f"Title: {page_title}")
+            print(page_title)
             parent_node = markdown_to_html_node(content)
             html = parent_node.to_html()
-            print("html")
-            #Read the template file at template_path and store the contents in a variable.
-            with open('{template_path}', 'r') as template_file:
+            # Read the template file at template_path and store the contents in a variable.
+            with open(f"template.html", "r") as template_file:
                 template = template_file.read()
             # Replace the {{ Title }} and {{ Content }} placeholders in the template
-            # with the HTML and title you generated.
-            template = template.replace("({ Title })", page_title)
-            article = template.replace("({ Content }", html)
-            print(article)
+            # with thfkjje HTML and title you generated.
+            template = template.replace("{{ Title }}", page_title)
+            article = template.replace("{{ Content }}", html)
             # Write the new full HTML page to a file at dest_path. Be sure to create any
             # necessary directories if they don't exist.
-            with open('{dest_path}', 'w') as write_file:
+            with open(f'{dest_path}index.html', 'w') as write_file:
                 write_file.write(article)
     except FileNotFoundError:
         print("File not found.")
