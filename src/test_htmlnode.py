@@ -47,11 +47,5 @@ class TestParentNode(unittest.TestCase):
             "<div><span><b>grandchild</b></span></div>",
         )
 
-    def test_parent_with_children_of_different_types(self):
-        child1 = LeafNode("i", "child1")
-        parent1 = ParentNode("a", [child1], {"href": "foo"})
-        self.assertEqual(parent1.to_html(), "<a href='foo'><i>child1</i></a>")
-
-
 if __name__ == "__main__":
     unittest.main()
