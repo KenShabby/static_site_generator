@@ -11,10 +11,11 @@ CONTENT_DIR = "content/"
 TEMPLATE_DIR = "."
 DEST_DIR = "docs/"
 
-if sys.argv[0]:
-    basepath = sys.argv[1]
+if len(sys.argv) > 1:
+    if sys.argv[1]:
+        basepath = sys.argv[1]
 else:
-    basepath = '/'
+    basepath = ''
 
 def copy_static_to_public():
     """It should first delete all the contents of the destination directory
