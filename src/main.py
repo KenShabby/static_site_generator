@@ -1,6 +1,7 @@
 import os
 import pathlib
 import shutil
+import sys
 
 from block_splitters import *
 from markdown_to_html_node import *
@@ -8,8 +9,12 @@ from markdown_to_html_node import *
 STATIC_DIR = "static/"
 CONTENT_DIR = "content/"
 TEMPLATE_DIR = "."
-DEST_DIR = "public/"
+DEST_DIR = "docs/"
 
+if sys.argv[0]:
+    basepath = sys.argv[1]
+else:
+    basepath = '/'
 
 def copy_static_to_public():
     """It should first delete all the contents of the destination directory
@@ -67,6 +72,8 @@ def generate_page(from_path, template_path, dest_path):
             # with the HTML and title you generated.
             template = template.replace("{{ Title }}", page_title)
             article = template.replace("{{ Content }}", html)
+            article = article.replace('href="/', f'href="{basepath}')
+            article = article.replace('src="/', f'src="{basepath}')
             # Write the new full HTML page to a file at dest_path. Be sure to create any
             # necessary directories if they don't exist.
             print(f"Trying to make dir: {os.path.dirname(dest_path)}")
@@ -83,13 +90,11 @@ def generate_page(from_path, template_path, dest_path):
 
 def main():
 
+
     copy_static_to_public()
     for root, dirs, files in pathlib.Path(CONTENT_DIR).walk():
-            # generate_page(f"./{root}",
-            #              f".", 
-            #              f"public/")
         for name in files:
-            generate_page(f"{root}/{name}", f"template.html", f"{DEST_DIR}{root}/{name}")
+            generate_page(f"{root}/{name}", f"template.html", f"{basepath}{DEST_DIR}{root}/{name}")
     return
 
 
