@@ -15,7 +15,7 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, bas
 
 
 def generate_page(from_path, template_path, dest_path, basepath):
-    print(f" * {from_path} {template_path} -> {dest_path}")
+    print(f"{from_path} {template_path} -> {dest_path}")
     from_file = open(from_path, "r")
     markdown_content = from_file.read()
     from_file.close()
@@ -45,4 +45,4 @@ def extract_title(md):
     for line in lines:
         if line.startswith("# "):
             return line[2:]
-    raise ValueError("no title found")
+    raise ValueError("no valid title")
