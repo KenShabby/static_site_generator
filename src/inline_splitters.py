@@ -80,6 +80,7 @@ def split_nodes_link(old_nodes) -> list:
 
     return new_nodes
 
+
 def split_nodes_delimiter(old_nodes, delimiter, text_type) -> list:
     new_nodes = []
     for old_node in old_nodes:
@@ -100,8 +101,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type) -> list:
         new_nodes.extend(split_nodes)
     return new_nodes
 
+
 def extract_markdown_images(text) -> list:
-    """ Args: Takes raw markdown text. There can be multiple markdown links to
+    """Args: Takes raw markdown text. There can be multiple markdown links to
     images in the string.
 
     Returns: A list of tuples. Each tuple
@@ -114,18 +116,19 @@ def extract_markdown_images(text) -> list:
 
 
 def extract_markdown_links(text) -> list:
-    """ Args: Takes raw markdown text with markdown links.
+    """Args: Takes raw markdown text with markdown links.
 
-        Returns: A list of tuples. Each tuple contains the href value and url.
+    Returns: A list of tuples. Each tuple contains the href value and url.
     """
 
     link_md_regex = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
 
     return link_md_regex
 
+
 def text_to_textnodes(text) -> list:
-    """ Args: A raw string of Markdown.
-        Returns a list of TextNodes
+    """Args: A raw string of Markdown.
+    Returns a list of TextNodes
     """
     # Handle the empty string case specifically
     if text == "":

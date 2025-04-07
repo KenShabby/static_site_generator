@@ -2,6 +2,7 @@ from enum import Enum
 
 import re
 
+
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
     HEADING = "heading"
@@ -10,9 +11,10 @@ class BlockType(Enum):
     UNORDERED_LIST = "unordered_list"
     ORDERED_LIST = "ordered_list"
 
+
 def block_to_block_type(markdown) -> BlockType:
-    """ Args: A single block of markdown text.
-        Returns: A Blocktype enum representing the type of block it is.
+    """Args: A single block of markdown text.
+    Returns: A Blocktype enum representing the type of block it is.
     """
     heading_pattern = r"^#{1,6} "
     code_pattern = r"^```.*```$"
@@ -30,20 +32,20 @@ def block_to_block_type(markdown) -> BlockType:
         return BlockType.CODE
 
     # Quote block handling
-    lines = markdown.split('\n')
-    if(all(re.match(quote_pattern, line) for line in lines)):
+    lines = markdown.split("\n")
+    if all(re.match(quote_pattern, line) for line in lines):
         return BlockType.QUOTE
 
     # Unordered list handling
-    lines = markdown.split('\n')
-    if(all(re.match(unordered_pattern, line) for line in lines)):
+    lines = markdown.split("\n")
+    if all(re.match(unordered_pattern, line) for line in lines):
         return BlockType.UNORDERED_LIST
 
     # Ordered list handling
-    lines = markdown.split('\n')
+    lines = markdown.split("\n")
     is_ordered_list = True
     expected_number = 1
-    
+
     for line in lines:
         if not line.startswith(f"{expected_number}. "):
             is_ordered_list = False
@@ -53,11 +55,12 @@ def block_to_block_type(markdown) -> BlockType:
     if is_ordered_list:
         return BlockType.ORDERED_LIST
 
-    # Paragraph type if nothing else matches
+    # Default to Paragraph type if nothing else matches
     block_type = BlockType.PARAGRAPH
     return block_type
 
-def markdown_to_blocks(markdown)-> list:
+
+def markdown_to_blocks(markdown) -> list:
     """Args: Takes a string representing the whole markdown document
     Returns: A list of markdown blocks (text sparated by newlines) of strings
     """
@@ -66,7 +69,7 @@ def markdown_to_blocks(markdown)-> list:
     # Discard empty items
     blocks = [item for item in blocks if item]
 
-   # Normalize internal newlines by handling indentation properly
+    # Normalize internal newlines by handling indentation properly
     normalized_blocks = []
     for block in blocks:
         lines = block.split("\n")
@@ -76,4 +79,3 @@ def markdown_to_blocks(markdown)-> list:
         normalized_blocks.append("\n".join(lines))
 
     return normalized_blocks
-

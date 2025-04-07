@@ -3,6 +3,7 @@ import shutil
 
 
 def copy_files_recursive(source_dir_path, dest_dir_path):
+    """Wipe out the destination directory to make a clean build"""
 
     if not os.path.exists(dest_dir_path):
         os.mkdir(dest_dir_path)
